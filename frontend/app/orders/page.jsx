@@ -109,7 +109,7 @@ function Orders() {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredOrders.map((order) => (
+        {filteredOrders.length > 0 ? (filteredOrders.map((order) => (
           <Card key={order._id}>
             <CardHeader>
               <CardTitle>Order #{order._id}</CardTitle>
@@ -124,7 +124,9 @@ function Orders() {
               </div>
             </CardContent>
           </Card>
-        ))}
+        ))) : (
+          <p>Your order list is empty.</p>
+        )}
       </div>
     </div>
   );
