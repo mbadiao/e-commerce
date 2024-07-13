@@ -1,56 +1,60 @@
 import asyncHandler from "express-async-handler";
 import User from "../Models/userModel.js";
+import ResetToken from "../Models/resetToken.js";
 import { config } from "dotenv";
 import crypto from "crypto";
-import pkg from "mailgun.js";
-import formData from "form-data";
-
-const Mailgun = pkg.default;
-
+import nodemailer from "nodemailer";
 config();
 
 const resetPassWord = asyncHandler(async (req, res) => {
   const { email } = req.body;
+
   try {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString("hex");
-    const resetTokenHashed = crypto
-      .createHash("sha256")
-      .update(resetToken)
-      .digest("hex");
+    const resetToken = crypto.randomBytes(20).toString("hex");
 
-    // Save token to the user's record
-    user.resetPasswordToken = resetTokenHashed;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour from now
-    await user.save();
+    // Store the token in ResetToken model
+    const resetTokenDoc = new ResetToken({
+      email: user.email,
+      token: resetToken,
+    });
+    await resetTokenDoc.save();
 
-    // Initialize Mailgun
-    const mailgun = new Mailgun(formData);
-    const mg = mailgun.client({
-      username: "api",
-      key: process.env.MAILGUN_API_KEY,
+    // Configure Nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      service: "gmail",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.APP_PASSWORD,
+      },
     });
 
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-
-    // Send reset email
-    await mg.messages.create("sandbox81cd553fc6784d238c45c863b5bf9337.mailgun.org", {
-      from: "diaombaye832@gmail.com",
+    const mailOptions = {
+      from: {
+        name: "ShopFast",
+        address: process.env.EMAIL,
+      },
       to: [user.email],
       subject: "Password Reset Request",
-      text: `You requested a password reset. Please click on the link to reset your password: ${resetUrl}`,
-      html: `<p>You requested a password reset. Please click on the link to reset your password:</p><a href="${resetUrl}">${resetUrl}</a>`,
-    });
+      text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n` +
+        `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+        `http://localhost:3000/auth/reset-password/${resetToken}\n\n` +
+        `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    };
 
+    transporter.sendMail(mailOptions);
     res.json({ message: "Password reset email sent" });
   } catch (error) {
-    console.error(error);
+    console.error('Error sending email:', error);
     res.status(500).json({ message: "Server error" });
   }
 });
