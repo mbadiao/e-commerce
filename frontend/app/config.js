@@ -16,3 +16,4 @@ export const ADMIN_ORDERS = `${API_BASE_URL}/admin/orders`;
 export const RESET_TOKEN = `${API_BASE_URL}/verify-reset-token`;
 export const ADD_TO_CART = `${API_BASE_URL}/addProductToCart`;
 export const ADD_TO_WISHLIST = `${API_BASE_URL}/addProductWhishlist`;
+export const GOOGLE = `${API_BASE_URL}/auth/provider`;
