@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -49,7 +47,7 @@ function Orders() {
       .filter((order) => {
         return (
           order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          order.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||  // Changed from order.date to order.createdAt
           order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
           order.totalAmount.toString().includes(searchTerm.toLowerCase())
         );
@@ -109,22 +107,24 @@ function Orders() {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredOrders.length > 0 ? (filteredOrders.map((order) => (
-          <Card key={order._id}>
-            <CardHeader>
-              <CardTitle>Order #{order._id}</CardTitle>
-              <CardDescription>{new Date(order.createdAt).toLocaleDateString()}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-medium">XOF{order.totalAmount.toFixed(2)}</span>
-                <Badge variant={order.status === "Delivered" ? "success" : order.status === "Shipped" ? "info" : "warning"}>
-                  {order.status}
-                </Badge>
-              </div>
-            </CardContent>
-          </Card>
-        ))) : (
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
+            <Card key={order._id}>
+              <CardHeader>
+                <CardTitle>Order #{order._id}</CardTitle>
+                <CardDescription>{new Date(order.createdAt).toLocaleDateString()}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-medium">XOF{order.totalAmount.toFixed(2)}</span>
+                  <Badge variant={order.status === "Delivered" ? "success" : order.status === "Shipped" ? "info" : "warning"}>
+                    {order.status}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
           <p>Your order list is empty.</p>
         )}
       </div>
