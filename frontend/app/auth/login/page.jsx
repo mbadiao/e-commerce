@@ -130,7 +130,7 @@ const Login = () => {
           </form>
           <div className="mt-5">
             <div className="mt-5 flex gap-2 items-center">
-              <p>Don't have an account?</p>
+              <p>Don&apos;t have an account?</p>
               <Link href="/auth">
                 <Button>Register</Button>
               </Link>
