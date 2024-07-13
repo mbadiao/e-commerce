@@ -7,7 +7,6 @@ import useSWR from "swr";
 import { useProductStore } from "@/app/store/getUserFromCookie";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -44,7 +43,20 @@ const ProductPage = () => {
   };
 
   const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+    const value = parseInt(event.target.value);
+    if (value > 0) {
+      setQuantity(value);
+    }
+  };
+
+  const handleAddQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleReduceQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
 
   const handleAddToCart = async () => {
@@ -60,7 +72,6 @@ const ProductPage = () => {
       productId: product._id,
       quantity: parseInt(quantity),
       size: selectedSize,
-      user: user._id,
     };
     try {
       const response = await fetch(
@@ -81,9 +92,65 @@ const ProductPage = () => {
 
       const updatedCart = await response.json();
       addToCartState(updatedCart);
+      setIsLoading(false);
+      toast({
+        title: "Success",
+        description: "Product added to cart",
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
-    } finally {
+      toast({
+        title: "Error",
+        description: "Failed to add product to cart",
+      });
+      setIsLoading(false);
+    }
+  };
+
+  const handleAddToWishlist = async () => {
+    if (!selectedSize) {
+      toast({
+        title: "Missing: size",
+        description: "Please select a size",
+      });
+      return;
+    }
+    setIsLoading(true);
+    const wishlistItem = {
+      productId: product._id,
+      quantity: parseInt(quantity),
+      size: selectedSize,
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/addProductWhishlist",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(wishlistItem),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to add to wishlist");
+      }
+
+      const updatedWishlist = await response.json();
+      // Update state or perform any other action needed with the updated wishlist
+      setIsLoading(false);
+      toast({
+        title: "Success",
+        description: "Product added to wishlist",
+      });
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add product to wishlist",
+      });
       setIsLoading(false);
     }
   };
@@ -120,7 +187,7 @@ const ProductPage = () => {
             <label
               key={size}
               className={`flex items-center border p-2 cursor-pointer ${
-                selectedSize === size ? "border-black" : "border-gray-400"
+                selectedSize === size ? "border-white bg-gray-800 text-white" : "border-gray-400"
               }`}
             >
               <input
@@ -136,33 +203,57 @@ const ProductPage = () => {
           ))}
         </div>
         <div className="mt-5">
-          <label className="block mb-2 text-sm font-medium text-gray-900">
+          <label className="font-bold block mb-2 text-sm text-gray-900">
             Quantity
           </label>
-          <input
-            type="number"
-            value={quantity}
-            min="1"
-            onChange={handleQuantityChange}
-            className="w-20 border p-2 text-center"
-          />
+          <div className="flex items-center">
+            <Button
+              type="button"
+              onClick={handleReduceQuantity}
+              className="border p-2"
+            >
+              -
+            </Button>
+            <input
+              type="number"
+              value={quantity}
+              min="1"
+              onChange={handleQuantityChange}
+              className="w-20 border p-2 text-center mx-2"
+            />
+            <Button
+              type="button"
+              onClick={handleAddQuantity}
+              className="border p-2"
+            >
+              +
+            </Button>
+          </div>
         </div>
         <div className="flex gap-3 mt-5 z-20">
           {token ? (
             <>
-            <Button onClick={handleAddToCart} disabled={isLoading}>
-              {isLoading ? "Adding..." : "Add to cart"}
-            </Button>
-            <Button variant={'outline'}>Add to wishlist</Button></>
-
+              <Button onClick={handleAddToCart} disabled={isLoading}>
+                {isLoading ? "Adding..." : "Add to cart"}
+              </Button>
+              <Button
+                variant={"outline"}
+                onClick={handleAddToWishlist}
+                disabled={isLoading}
+              >
+                {isLoading ? "Adding..." : "Add to wishlist"}
+              </Button>
+            </>
           ) : (
             <>
               <Link href="/login">
                 <Button>{isLoading ? "Adding..." : "Add to cart"}</Button>
-                </Link>
-                <Link href="/login">
-                <Button variant={'outline'}>Add to wishlist</Button>
-                </Link>
+              </Link>
+              <Link href="/login">
+                <Button variant={"outline"}>
+                  {isLoading ? "Adding..." : "Add to wishlist"}
+                </Button>
+              </Link>
             </>
           )}
         </div>

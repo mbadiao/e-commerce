@@ -30,7 +30,7 @@ const Card = ({ clotheprops }) => {
 
   return (
     <Link href={`/clothes/${_id}`} passHref>
-      <div className="bg-gray-100 hover:bg-white shadow-lg group w-[300px] rounded-xl h-72 p-4" ref={scope}>
+      <div className="bg-gray-100 hover:bg-white shadow-lg group w-[400px] rounded-xl h-72 p-4" ref={scope}>
       <div className="relative flex w-full mt-2">
           <div className="flex invisible group-hover:visible w-full justify-between text-gray">
             <div className="">

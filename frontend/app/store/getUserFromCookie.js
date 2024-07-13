@@ -4,7 +4,10 @@ import { create } from 'zustand';
 const useProductStore = create((set) => ({
   products: [],
   allProducts: [],
-  user: null,
+  user: {
+    firstname: '',
+    email: '',
+  },
   cart: [],
   setUser: (user) => set({ user }),
   logoutState: () => {

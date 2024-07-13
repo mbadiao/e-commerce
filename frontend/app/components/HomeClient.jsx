@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { CustomFilter, Hero, SearchBar, Card } from "../components";
+import { CustomFilter, Hero, SearchBar, Card } from ".";
 import { useProductStore } from "../store/getUserFromCookie";
 import { useRouter, useSearchParams } from "next/navigation";
 

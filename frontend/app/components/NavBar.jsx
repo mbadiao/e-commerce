@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useProductStore } from "../store/getUserFromCookie";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import MobileNavbar from "./MobileNavbar";
+import { Bell, ShoppingCart, Heart, Mountain } from "lucide-react";
+
 async function fetchProfileUser() {
   const token = localStorage.getItem('token');
   if (!token) {
@@ -28,13 +28,14 @@ async function fetchProfileUser() {
 }
 
 const NavBar = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   const logoutState = useProductStore((state) => state.logoutState);
   const setUser = useProductStore((state) => state.setUser);
+  const [loading, setLoading] = useState(true);
   const logout = () => {
     localStorage.removeItem("token");
-    router.push('/')
+    router.push('/');
     logoutState();
   };
 
@@ -42,6 +43,7 @@ const NavBar = () => {
     (async () => {
       const profile = await fetchProfileUser();
       setUser(profile);
+      setLoading(false);
     })();
   }, [setUser]);
 
@@ -52,60 +54,56 @@ const NavBar = () => {
     setIsClient(true);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="animate-spin rounded-full border-4 border-primary border-t-transparent h-6 w-6" />
+      </div>
+    )
+  }
+
   return (
-    <header className="w-full">
-      <nav className="max-w-[1440px] mx-auto flex justify-between items-center sm:px-16 px-6 py-4">
-        <Link
-          href="/"
-          className="flex justify-center items-center text-white font-bold"
-        >
-          <Image
-            src="/logo.svg"
-            alt="MyShop logo"
-            width={38}
-            height={38}
-            className="object-contain"
-          />
-          MyShop
+    <header className="fixed top-0 left-0 w-full bg-background shadow-md z-50 px-4 md:px-6 h-16 flex items-center justify-between">
+      <Link href="/" className="flex items-center gap-2" prefetch={false}>
+        <Mountain className="w-6 h-6" />
+        <span className="sr-only">Home</span>
+      </Link>
+      <div className="flex items-center gap-4">
+        {isClient && user && user.isAdmin && (
+          <Link href="/dashboard">
+            <Button variant="outline">Dashboard</Button>
+          </Link>
+        )}
+        <Link href="/orders">
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <Bell className="w-5 h-5" />
+          <span className="sr-only">Notifications</span>
+        </Button>
         </Link>
-        {isClient && user && user.isAdmin ?(  <Link
-              href="/dashboard">
-              <Button>
-                Dashboard
-              </Button>
-            </Link>) : (<></>)}
+        <Link href="/cart">
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <ShoppingCart className="w-5 h-5" />
+            <span className="sr-only">Cart</span>
+          </Button>
+        </Link>
+        <Link href="/whishlist">
+          <Button variant="ghost" size="icon" className="rounded-full">
+            <Heart className="w-5 h-5" />
+            <span className="sr-only">Wishlist</span>
+          </Button>
+        </Link>
         {isClient && user ? (
-          <>
-          <MobileNavbar />
-          <div className="hidden md:flex lg:flex gap-4 text-xl font- items-center">
-          <Link
-              href="/cart">
-              <Button>
-                My cart
-              </Button>
-            </Link>
-            <Link
-              href="/whishlist">
-              <Button>
-                My whishlist
-              </Button>
-            </Link>
-            <Button className="font-bold"
-              onClick={logout}
-            >
-              Log Out
-            </Button>
-          </div></>
+          <Button variant="outline" onClick={logout}>
+            Log Out
+          </Button>
         ) : (
           isClient && (
             <Link href="/auth">
-              <Button className="font-bold">
-                Sing In
-              </Button>
+              <Button variant="outline">Sign In</Button>
             </Link>
           )
         )}
-      </nav>
+      </div>
     </header>
   );
 };

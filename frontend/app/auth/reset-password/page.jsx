@@ -21,9 +21,11 @@ const ForgotPassword = () => {
         },
         body: JSON.stringify({ email }),
       });
+
       const data = await response.json();
       setMessage(data.message);
     } catch (error) {
+      console.log(error)
       setMessage(error.message || 'An error occurred.');
     }
 
