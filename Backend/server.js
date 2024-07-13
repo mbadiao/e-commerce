@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // Be specific
+  origin: 'https://sunushop.vercel.app',
   credentials: true
 };
 app.use(cors(corsOptions));

@@ -60,7 +60,7 @@ const callbackProvider = asyncHandler((req, res, next) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        res.redirect(`http://localhost:3000?token=${token})}`);
+        res.redirect(`https://sunushop.vercel.app?token=${token})}`);
       });
     }
   )(req, res, next);

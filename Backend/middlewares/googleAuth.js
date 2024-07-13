@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.clientID,
       clientSecret: process.env.clientSecret,
-      callbackURL: "http://localhost:3000/auth/google/callback",
+      callbackURL: "https://sunushop.vercel.app/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       const user = { id: profile.id, ...profile };
@@ -49,7 +49,7 @@ routes.get(
       expiresIn: "1h",
     });
     console.log("Generated Token:", token); // Log the token for debugging
-    res.redirect(`http://localhost:3000?token=${token}`);
+    res.redirect(`https://sunushop.vercel.app?token=${token}`);
   }
 );
 
