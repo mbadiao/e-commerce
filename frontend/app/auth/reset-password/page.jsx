@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { RESET_PSW } from '@/app/config';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8080/api/reset-password', {
+      const response = await fetch(RESET_PSW, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

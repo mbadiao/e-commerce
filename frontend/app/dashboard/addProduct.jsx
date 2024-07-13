@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { ORDERS_URL } from "../config";
 const AddProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -55,7 +56,7 @@ const AddProduct = () => {
       imageUrl,
     };
 
-    const response = await fetch("http://localhost:8080/api/products", {
+    const response = await fetch(ORDERS_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,12 +1,10 @@
 import React, { Suspense } from "react";
 import HomeClient from "./components/HomeClient";
-
+import { PRODUCTS_URL } from "./config";
 
 async function fetchProducts() {
   try {
-    const response = await fetch("http://localhost:8080/api/products", 
-      {next: {revalidate: 10}}
-);
+    const response = await fetch(PRODUCTS_URL, { next: { revalidate: 10 } });
 
     if (!response.ok) {
       throw new Error("Failed to fetch products");

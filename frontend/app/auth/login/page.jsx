@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import LoginButton from "@/app/components/LoginButton";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-
+import { LOGIN_URL } from "@/app/config";
 const Login = () => {
   const setUser = useProductStore((state) => state.setUser);
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/login", {
+      const response = await fetch(LOGIN_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

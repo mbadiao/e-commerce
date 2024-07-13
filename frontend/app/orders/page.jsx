@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
+import { ORDERS_URL } from "../config";
 function Orders() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -19,7 +19,7 @@ function Orders() {
         return;
       }
       try {
-        const response = await fetch("http://localhost:8080/api/orders", {
+        const response = await fetch(ORDERS_URL, {
           method: "GET",
           credentials: "include",
           headers: {

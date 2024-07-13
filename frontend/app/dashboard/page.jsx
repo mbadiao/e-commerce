@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
-
+import { COUNT_USERS, PRODUCTS_URL,ADMIN_ORDERS } from "../config"
 function Dashboard() {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
@@ -33,7 +33,7 @@ function Dashboard() {
         const token = localStorage.getItem('token');
         
         // Fetch user count
-        const userCountResponse = await fetch('http://localhost:8080/api/users/count', {
+        const userCountResponse = await fetch(COUNT_USERS, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -42,7 +42,7 @@ function Dashboard() {
         setUsers(userCountData.count);
   
         // Fetch orders
-        const ordersResponse = await fetch('http://localhost:8080/api/admin/orders', {
+        const ordersResponse = await fetch(ADMIN_ORDERS, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -51,7 +51,7 @@ function Dashboard() {
         setOrders(ordersData);
         setFilteredOrders(ordersData);
         // Fetch products
-        const productsResponse = await fetch('http://localhost:8080/api/products', {
+        const productsResponse = await fetch(PRODUCTS_URL, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -86,7 +86,7 @@ function Dashboard() {
   const handleMarkDelivered = async (orderId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/api/admin/orders/${orderId}/deliver`, {
+      const response = await fetch(`${ADMIN_ORDERS}/${orderId}/deliver`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -103,7 +103,7 @@ function Dashboard() {
   const handleAddProduct = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/api/products', {
+      const response = await fetch(PRODUCTS_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ function Dashboard() {
   const handleUpdateProduct = async (id, updates) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+      const response = await fetch(`${PRODUCTS_URL}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ function Dashboard() {
   const handleDeleteProduct = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await fetch(`http://localhost:8080/api/products/${id}`, {
+      await fetch(`${PRODUCTS_URL}/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import { PRODUCTS_URL , ADD_TO_CART, ADD_TO_WISHLIST} from "@/app/config";
 const fetchProduct = async (url) => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -34,7 +34,7 @@ const ProductPage = () => {
   }, []);
 
   const { data: product, error } = useSWR(
-    id ? `http://localhost:8080/api/products/${id}` : null,
+    id ? `${PRODUCTS_URL}/${id}` : null,
     fetchProduct
   );
 
@@ -74,8 +74,7 @@ const ProductPage = () => {
       size: selectedSize,
     };
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/addProductToCart",
+      const response = await fetch(ADD_TO_CART,
         {
           method: "POST",
           headers: {
@@ -123,7 +122,7 @@ const ProductPage = () => {
     };
     try {
       const response = await fetch(
-        "http://localhost:8080/api/addProductWhishlist",
+        ADD_TO_WISHLIST,
         {
           method: "POST",
           headers: {

@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { CART_URL, DEL_CART_URL } from '../config';
 const getCart = async () => {
   try {
-    const response = await fetch('http://localhost:8080/api/getCarts', {
+    const response = await fetch(CART_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +29,7 @@ const getCart = async () => {
 const deleteFromCart = async (productId, size) => {
   const itemTodele= JSON.stringify({ productId, size })
   try {
-    const response = await fetch('http://localhost:8080/api/deleteProductFromCart', {
+    const response = await fetch(DEL_CART_URL, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

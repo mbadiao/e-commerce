@@ -5,7 +5,7 @@ import { RiLoginCircleFill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { useProductStore } from "../store/getUserFromCookie";
 import { Button } from "@/components/ui/button";
-
+import { REGISTER_URL } from "../config";
 const Register = () => {
   const setUser = useProductStore((state) => state.setUser);
   const [firstName, setFirstName] = useState("");
@@ -17,7 +17,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/api/register", {
+      const response = await fetch(REGISTER_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

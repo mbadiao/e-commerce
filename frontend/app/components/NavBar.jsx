@@ -5,14 +5,14 @@ import { useProductStore } from "../store/getUserFromCookie";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Bell, ShoppingCart, Heart, Mountain } from "lucide-react";
-
+import { USER_URL } from "../config";
 async function fetchProfileUser() {
   const token = localStorage.getItem('token');
   if (!token) {
     return;
   }
   try {
-    const response = await fetch("http://localhost:8080/api/user", {
+    const response = await fetch(USER_URL, {
       method: "GET",
       credentials: "include",
       headers: {

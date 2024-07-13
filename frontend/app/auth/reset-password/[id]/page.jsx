@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
+import { RESET_TOKEN } from '@/app/config';
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/verify-reset-token`, {
+      const response = await fetch(RESET_TOKEN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

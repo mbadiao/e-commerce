@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 
 
-const HomeClient = ({ products, user }) => {
+const HomeClient = ({ products }) => {
   const setProducts = useProductStore((state) => state.setProducts);
   const router = useRouter();
   const searchParams = useSearchParams();

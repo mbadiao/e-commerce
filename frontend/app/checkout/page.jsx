@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-
+import { USER_URL, CART_URL, ORDERS_URL } from "../config";
 const Checkout = () => {
   const [cart, setCart] = useState([]);
   const [user, setUser] = useState({});
@@ -37,7 +37,7 @@ const Checkout = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/user", {
+        const response = await fetch(USER_URL, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -52,7 +52,7 @@ const Checkout = () => {
 
     const fetchCartData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/getCarts", {
+        const response = await fetch(CART_URL, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -92,7 +92,7 @@ const Checkout = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const response = await fetch("http://localhost:8080/api/orders", {
+        const response = await fetch(ORDERS_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-
+import { WISHLIST_URL , DEL_WISHLIST_URL, ADD_CART_WISHLIST_URL} from "../config";
 const getWishlist = async () => {
   try {
-    const response = await fetch("http://localhost:8080/api/getWhishlist", {
+    const response = await fetch(WISHLIST_URL, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const getWishlist = async () => {
 
 const deleteFromWishlist = async (productId, size) => {
   try {
-    const response = await fetch("http://localhost:8080/api/deleteProductFromWishlist", {
+    const response = await fetch(DEL_WISHLIST_URL, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const deleteFromWishlist = async (productId, size) => {
 
 const addToCartFromWishlist = async (productId, size) => {
   try {
-    const response = await fetch("http://localhost:8080/api/addProductToCartFromWishlist", {
+    const response = await fetch(ADD_CART_WISHLIST_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
