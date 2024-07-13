@@ -82,7 +82,7 @@ const Cart = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center pt-30 px-10 min-h-[70vh] overflow-scroll'>
+    <div className='flex flex-col justify-center items-center pt-30 px-10 min-h-[400px] overflow-scroll'>
       <h2 className='font-bold'>My Cart</h2>
       {cart.length > 0 ? (
         <>

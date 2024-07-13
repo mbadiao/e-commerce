@@ -110,7 +110,7 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-30 px-10 min-h-[70vh] overflow-scroll">
+    <div className="flex flex-col justify-center items-center pt-30 px-10 min-h-[400px] overflow-scroll">
       <h2 className="font-bold">My Wishlist</h2>
       {wishlist.length > 0 ? (
         <Table>
