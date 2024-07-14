@@ -17,6 +17,7 @@ function Orders() {
     const fetchOrders = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
+        setLoading(false);
         return;
       }
       try {
@@ -56,10 +57,7 @@ function Orders() {
       });
   }, [orders, selectedStatus, searchTerm]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  // Render content once loading is false
   return (
     <div className="container mx-auto px-4 py-8 mt-20 min-h-[400px]">
       <div className="flex items-center justify-between mb-6">
@@ -108,40 +106,43 @@ function Orders() {
           </DropdownMenu>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((order) => (
-            <Card key={order._id}>
-              <CardHeader>
-                <CardTitle>Order #{order._id}</CardTitle>
-                <CardDescription>{new Date(order.createdAt).toLocaleDateString()}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <span className="text-lg font-medium">XOF{order.totalAmount.toFixed(2)}</span>
-                  <Badge
-                    variant={
-                      order.status === "Delivered"
-                        ? "success"
-                        : order.status === "Shipped"
-                        ? "info"
-                        : "warning"
-                    }
-                  >
-                    {order.status}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <p>Your order list is empty.</p>
-        )}
-      </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order) => (
+              <Card key={order._id}>
+                <CardHeader>
+                  <CardTitle>Order #{order._id}</CardTitle>
+                  <CardDescription>{new Date(order.createdAt).toLocaleDateString()}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-medium">XOF{order.totalAmount.toFixed(2)}</span>
+                    <Badge
+                      variant={
+                        order.status === "Delivered"
+                          ? "success"
+                          : order.status === "Shipped"
+                          ? "info"
+                          : "warning"
+                      }
+                    >
+                      {order.status}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <p>Your order list is empty.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
-
 
 function ChevronDownIcon(props) {
   return (
