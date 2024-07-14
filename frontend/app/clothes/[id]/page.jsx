@@ -164,7 +164,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="flex px-10 flex-col lg:flex-row md:flex-row container mx-auto h-screen justify-evenly lg:px-[10vw]">
+    <div className="flex mt-20 px-10 flex-col lg:flex-row md:flex-row container mx-auto h-screen justify-evenly lg:px-[10vw]">
       <div className="relative w-full lg:w-1/2 md:w-1/2 h-1/2 lg:h-full md:h-full object-contain mb-5 lg:mb-0 md:mb-0">
         <Image
           src={product.imageUrl}
