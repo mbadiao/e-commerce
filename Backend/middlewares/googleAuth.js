@@ -46,6 +46,7 @@ routes.get(
     const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+    console.log(token)
     res.redirect(`https://sunushop.vercel.app?token=${token}`);
   }
 );
