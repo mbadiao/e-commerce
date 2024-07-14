@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ORDERS_URL } from "../config";
+
 function Orders() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -14,7 +15,7 @@ function Orders() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
         return;
       }
@@ -24,7 +25,7 @@ function Orders() {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         const data = await response.json();
@@ -48,7 +49,7 @@ function Orders() {
       .filter((order) => {
         return (
           order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          order.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||  // Changed from order.date to order.createdAt
+          order.createdAt.toLowerCase().includes(searchTerm.toLowerCase()) ||
           order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
           order.totalAmount.toString().includes(searchTerm.toLowerCase())
         );
@@ -118,7 +119,15 @@ function Orders() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-medium">XOF{order.totalAmount.toFixed(2)}</span>
-                  <Badge variant={order.status === "Delivered" ? "success" : order.status === "Shipped" ? "info" : "warning"}>
+                  <Badge
+                    variant={
+                      order.status === "Delivered"
+                        ? "success"
+                        : order.status === "Shipped"
+                        ? "info"
+                        : "warning"
+                    }
+                  >
                     {order.status}
                   </Badge>
                 </div>
