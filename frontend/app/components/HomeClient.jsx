@@ -14,9 +14,10 @@ const HomeClient = ({ products }) => {
   useEffect(() => {
     // Check for token in URL and set it in local storage
     const token = searchParams.get('token');
-    console.log(token)
     if (token) {
-      localStorage.setItem('token', token);
+      // Remove any trailing ")}" from the token
+      const cleanedToken = token.replace(/\)\}$/, '');
+      localStorage.setItem('token', cleanedToken);
       router.replace('/');
     }
     setProducts(products);
