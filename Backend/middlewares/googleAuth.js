@@ -38,17 +38,14 @@ routes.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
-    console.log("Reached callback");
     if (!req.user) {
-      console.log("No user found");
-      return res.redirect("/login");
+      return res.redirect("https://sunushop.vercel.app/auth/login");
     }
 
     // Generate a token and send it to the client
-    const token = jwt.sign(req.user, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    console.log("Generated Token:", token); // Log the token for debugging
     res.redirect(`https://sunushop.vercel.app?token=${token}`);
   }
 );
