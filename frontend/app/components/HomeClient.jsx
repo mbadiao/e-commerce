@@ -15,9 +15,7 @@ const HomeClient = ({ products }) => {
     // Check for token in URL and set it in local storage
     const token = searchParams.get('token');
     if (token) {
-      // Remove any trailing ")}" from the token
-      const cleanedToken = token.replace(/\)\}$/, '');
-      localStorage.setItem('token', cleanedToken);
+      localStorage.setItem('token', token);
       router.replace('/');
     }
     setProducts(products);
