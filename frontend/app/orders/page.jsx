@@ -19,6 +19,7 @@ function Orders() {
       if (!token) {
         return;
       }
+      console.log(token)
       try {
         const response = await fetch(ORDERS_URL, {
           method: "GET",
