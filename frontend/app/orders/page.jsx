@@ -142,7 +142,6 @@ function Orders() {
   );
 }
 
-export default Orders;
 
 function ChevronDownIcon(props) {
   return (
@@ -182,3 +181,5 @@ function XIcon(props) {
     </svg>
   );
 }
+
+export default Orders;
