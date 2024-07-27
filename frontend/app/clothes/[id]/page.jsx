@@ -245,10 +245,10 @@ const ProductPage = () => {
             </>
           ) : (
             <>
-              <Link href="auth/login">
+              <Link href="/auth/login">
                 <Button>{isLoading ? "Adding..." : "Add to cart"}</Button>
               </Link>
-              <Link href="auth/login">
+              <Link href="/auth/login">
                 <Button variant={"outline"}>
                   {isLoading ? "Adding..." : "Add to wishlist"}
                 </Button>
