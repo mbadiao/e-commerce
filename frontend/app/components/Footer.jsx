@@ -21,8 +21,8 @@ const Footer = () => {
                  </p>
             </div>
             <div className='footer_links gap-3'>
-                 <Link href='home'>Home </Link>
-                 <Link href='produts'>Products</Link>
+                 <Link href='/'>Home</Link>
+                 <Link href='/#discover'>Products</Link>
             </div>
         </div>
 

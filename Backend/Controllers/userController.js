@@ -5,6 +5,14 @@ import bcrypt from "bcryptjs";
 import passport from "../Configurations/passport.js";
 import jwt from "jsonwebtoken";
 
+const frontendUrl = (
+  process.env.FRONTEND_URL || "https://sunushop.vercel.app"
+).replace(/\/$/, "");
+const hasGoogleOauthConfig =
+  Boolean(process.env.OAUTH_CLIENT_ID) &&
+  Boolean(process.env.OAUTH_CLIENT_SECRET) &&
+  Boolean(process.env.OAUTH_CALLBACK_URL);
+
 const AuthUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -41,12 +49,20 @@ const RegisterUser = asyncHandler(async (req, res) => {
 });
 
 const googleAuth = asyncHandler(async (req, res, next) => {
+  if (!hasGoogleOauthConfig) {
+    return res.status(503).json({ message: "Google OAuth is not configured" });
+  }
+
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })(req, res, next);
 });
 
 const callbackProvider = asyncHandler((req, res, next) => {
+  if (!hasGoogleOauthConfig) {
+    return res.status(503).json({ message: "Google OAuth is not configured" });
+  }
+
   passport.authenticate(
     "google",
     { failureRedirect: "/auth", failureFlash: true },
@@ -60,7 +76,7 @@ const callbackProvider = asyncHandler((req, res, next) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
-        res.redirect(`https://sunushop.vercel.app?token=${token})}`);
+        res.redirect(`${frontendUrl}?token=${token}`);
       });
     }
   )(req, res, next);

@@ -6,6 +6,10 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 config();
 
+const frontendUrl = (
+  process.env.FRONTEND_URL || "https://sunushop.vercel.app"
+).replace(/\/$/, "");
+
 const resetPassWord = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -47,7 +51,7 @@ const resetPassWord = asyncHandler(async (req, res) => {
       subject: "Password Reset Request",
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n` +
         `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-        `https://sunushop.vercel.app/auth/reset-password/${resetToken}\n\n` +
+        `${frontendUrl}/auth/reset-password/${resetToken}\n\n` +
         `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
 

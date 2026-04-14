@@ -1,4 +1,18 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080/api';
+const normalizeBaseUrl = (value, fallback) =>
+  (value || fallback).replace(/\/$/, "");
+
+const publicBaseUrl = normalizeBaseUrl(
+  process.env.NEXT_PUBLIC_BASE_URL,
+  "http://localhost:8080/api"
+);
+
+const serverBaseUrl = normalizeBaseUrl(
+  process.env.API_BASE_URL,
+  publicBaseUrl
+);
+
+const API_BASE_URL =
+  typeof window === "undefined" ? serverBaseUrl : publicBaseUrl;
 
 export const LOGIN_URL = `${API_BASE_URL}/login`;
 export const REGISTER_URL = `${API_BASE_URL}/register`;
